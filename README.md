@@ -1,4 +1,4 @@
-# Portafolio Digital — Héctor A. López Rivera
+# Portafolio Digital — Héctor A. López Rivera 
 
 Portafolio personal académico/preprofesional, minimalista y classy. Una sola página HTML, sin dependencias de servidor, completamente editable.
 
