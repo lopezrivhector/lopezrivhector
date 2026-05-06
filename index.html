@@ -1252,7 +1252,26 @@
     }
     .lead-card:hover .lead-photo img { transform: scale(1.04); }
 
+    /* Neuronline bio screenshot — wider aspect, no cropping */
+    .lead-card .lead-photo.lead-photo-bio {
+      aspect-ratio: 16 / 6;
+      background: #ffffff;
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .lead-card .lead-photo.lead-photo-bio img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .lead-card:hover .lead-photo.lead-photo-bio img {
+      transform: none;
+    }
+
     /* Clinical photo gallery — full row */
+    .clinical-gallery {/* Clinical photo gallery — full row */
     .clinical-gallery {
       grid-column: 1 / -1;
       margin-top: 2.5rem;
