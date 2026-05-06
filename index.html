@@ -248,15 +248,15 @@
     }
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.5fr 1fr;
-      gap: 4rem;
-      align-items: center;
+      grid-template-columns: 1.65fr 1fr;
+      gap: 3rem;
+      align-items: start;
       position: relative;
       z-index: 1;
     }
     @media (max-width: 880px) {
       .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-      .hero-photo { order: -1; max-width: 280px; margin: 0 auto; }
+      .hero-photo { order: -1; max-width: 260px; margin: 0 auto; }
     }
 
     .hero-eyebrow {
@@ -349,8 +349,10 @@
     .hero-photo {
       position: relative;
       aspect-ratio: 4/5;
-      max-width: 380px;
+      width: 100%;
+      max-width: 320px;
       margin-left: auto;
+      margin-right: 0;
       border-radius: var(--radius);
       overflow: hidden;
       background: linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 100%);
@@ -373,8 +375,10 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center 25%;
       position: relative;
       z-index: 1;
+      filter: saturate(1.05) contrast(1.02);
     }
     .hero-photo-frame {
       position: absolute;
@@ -1165,6 +1169,153 @@
     ::selection { background: rgba(184,147,95,0.3); color: var(--ink); }
     *:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
+    /* ----- Photo galleries (research / pubs / leadership / clinical) ----- */
+    .tl-photos, .pub-photos, .clinical-gallery {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 1.1rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--line);
+      flex-wrap: wrap;
+    }
+    .photo-thumb {
+      display: block;
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: zoom-in;
+      background: var(--bg-alt);
+      transition: transform .25s ease, box-shadow .25s ease;
+      flex: 0 0 auto;
+      width: 110px;
+      height: 78px;
+    }
+    .photo-thumb:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.14);
+    }
+    .photo-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: filter .25s ease;
+    }
+    .photo-thumb:hover img { filter: brightness(1.05); }
+    .photo-thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(0,0,0,0.04);
+      border-radius: var(--radius);
+      pointer-events: none;
+    }
+    .photo-thumb-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 0.3rem 0.5rem 0.25rem;
+      font-size: 0.65rem;
+      color: #fff;
+      background: linear-gradient(transparent 0%, rgba(0,0,0,0.65) 100%);
+      letter-spacing: 0.04em;
+      line-height: 1.3;
+      opacity: 0;
+      transition: opacity .25s ease;
+    }
+    .photo-thumb:hover .photo-thumb-caption { opacity: 1; }
+
+    /* Wider thumbs for clinical / leadership group photos */
+    .photo-thumb.wide { width: 160px; height: 110px; }
+    .photo-thumb.tall { width: 90px; height: 120px; }
+    .photo-thumb.square { width: 100px; height: 100px; }
+
+    /* Leadership card top photo */
+    .lead-card .lead-photo {
+      display: block;
+      width: calc(100% + 3.5rem);
+      margin: -1.75rem -1.75rem 1.25rem -1.75rem;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      background: var(--bg-alt);
+      cursor: zoom-in;
+    }
+    .lead-card .lead-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .4s cubic-bezier(.2,.8,.2,1);
+    }
+    .lead-card:hover .lead-photo img { transform: scale(1.04); }
+
+    /* Clinical photo gallery — full row */
+    .clinical-gallery {
+      grid-column: 1 / -1;
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--line);
+    }
+
+    /* ----- Lightbox ----- */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 15, 20, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 2rem;
+    }
+    .lightbox.open {
+      display: flex;
+      animation: lbFade .25s ease;
+    }
+    @keyframes lbFade {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .lightbox-img {
+      max-width: 92vw;
+      max-height: 82vh;
+      object-fit: contain;
+      border-radius: var(--radius);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+    }
+    .lightbox-caption {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.85);
+      font-size: 0.88rem;
+      text-align: center;
+      max-width: 80vw;
+      padding: 0.5rem 1rem;
+      background: rgba(0,0,0,0.45);
+      border-radius: 100px;
+      letter-spacing: 0.02em;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: white;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .2s ease;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,0.2); }
+
     /* Print */
     @media print {
       .nav, .hero-actions, .contact-links { display: none; }
@@ -1225,8 +1376,8 @@
           </a>
         </div>
       </div>
-      <div class="hero-photo reveal" id="heroPhoto" aria-label="Photograph placeholder">
-        <!-- Reemplazar con: <img src="profile.jpg" alt="Héctor López Rivera" /> -->
+      <div class="hero-photo reveal" id="heroPhoto">
+        <img src="profile.jpg" alt="Héctor Abdiel López-Rivera" loading="eager" />
         <div class="hero-photo-frame"></div>
       </div>
     </div>
@@ -1394,6 +1545,16 @@
               <div class="tl-project">Effects of Endocannabinoid System Activation in Neuro-Inflammatory Induced Depressive and Anxiety Behaviors via LPS Injection <span class="tl-project-meta">· Jun 2024 – Jun 2025 · Co-Author</span></div>
               <div class="tl-project">Effects of Endocannabinoid System Activation Through Exercise on Sociability in Adolescent Rats <span class="tl-project-meta">· Jun 2024 – Jun 2025 · Co-Author</span></div>
             </div>
+            <div class="tl-photos">
+              <a class="photo-thumb" data-lightbox data-src="photos/upr-neuroid.jpg" data-caption="Neuro-ID · UPR–Río Piedras / NIH-ENDURE">
+                <img src="photos/upr-neuroid.jpg" alt="Hector with the Neuro-ID polo at UPR Río Piedras" loading="lazy" />
+                <span class="photo-thumb-caption">Neuro-ID · UPR</span>
+              </a>
+              <a class="photo-thumb" data-lightbox data-src="photos/upr-poster.jpg" data-caption="Presenting the FAAH/URB-597 poster — 4th Multidisciplinary Local Symposium, Sagrado (3rd place)">
+                <img src="photos/upr-poster.jpg" alt="Presenting the FAAH poster at Sagrado Symposium" loading="lazy" />
+                <span class="photo-thumb-caption">FAAH poster · Sagrado 2026</span>
+              </a>
+            </div>
           </div>
         </div>
 
@@ -1428,6 +1589,20 @@
               <div class="tl-projects-title">Project</div>
               <div class="tl-project">Olfaction Modulates Dopaminergic Survival in C. elegans Model of Traumatic Brain Injury <span class="tl-project-meta">· Author</span></div>
             </div>
+            <div class="tl-photos">
+              <a class="photo-thumb" data-lightbox data-src="photos/utsw-mentor.jpg" data-caption="With Peter Douglas, Ph.D. — UT Southwestern Medical Center · Douglas Lab">
+                <img src="photos/utsw-mentor.jpg" alt="With mentor Peter Douglas, PhD at UT Southwestern" loading="lazy" />
+                <span class="photo-thumb-caption">With Peter Douglas, Ph.D.</span>
+              </a>
+              <a class="photo-thumb" data-lightbox data-src="photos/utsw-lab.jpg" data-caption="C. elegans assay — Douglas Lab, UT Southwestern Medical Center">
+                <img src="photos/utsw-lab.jpg" alt="In the Douglas Lab at UT Southwestern" loading="lazy" />
+                <span class="photo-thumb-caption">Douglas Lab</span>
+              </a>
+              <a class="photo-thumb" data-lightbox data-src="photos/utsw-poster.jpg" data-caption="Olfaction modulates dopaminergic survival in C. elegans — 2025 SURF Symposium, Dallas, TX">
+                <img src="photos/utsw-poster.jpg" alt="At the Olfaction C. elegans poster, SURF Symposium 2025" loading="lazy" />
+                <span class="photo-thumb-caption">SURF Symposium 2025</span>
+              </a>
+            </div>
           </div>
         </div>
 
@@ -1442,6 +1617,12 @@
               <li>Applied mathematical modeling and coding to simulate neural function and behavior.</li>
               <li>Gained foundational training in Python and R for quantitative analysis and modeling.</li>
             </ul>
+            <div class="tl-photos">
+              <a class="photo-thumb wide" data-lightbox data-src="photos/mit-dome.jpg" data-caption="At MIT — Massachusetts Institute of Technology Main Dome, Cambridge, MA">
+                <img src="photos/mit-dome.jpg" alt="At MIT Main Dome, Cambridge" loading="lazy" />
+                <span class="photo-thumb-caption">MIT · Cambridge, MA</span>
+              </a>
+            </div>
           </div>
         </div>
 
@@ -1474,6 +1655,20 @@
               <li>Engaged with diverse healthcare environments serving underrepresented communities.</li>
               <li>Collaborated with faculty mentors to explore pathways in medical education, health equity, and physician-scientist training.</li>
             </ul>
+            <div class="tl-photos">
+              <a class="photo-thumb" data-lightbox data-src="photos/uva-jim-ryan.jpg" data-caption="With Jim Ryan — President of the University of Virginia · UVA SMLP 2023">
+                <img src="photos/uva-jim-ryan.jpg" alt="With Jim Ryan, UVA President" loading="lazy" />
+                <span class="photo-thumb-caption">With Jim Ryan · UVA President</span>
+              </a>
+              <a class="photo-thumb" data-lightbox data-src="photos/uva-tyson-bell.jpg" data-caption="With Tyson Bell — UVA School of Medicine · SMLP 2023">
+                <img src="photos/uva-tyson-bell.jpg" alt="With Tyson Bell at UVA" loading="lazy" />
+                <span class="photo-thumb-caption">With Tyson Bell · UVA</span>
+              </a>
+              <a class="photo-thumb" data-lightbox data-src="photos/uva-rotation.jpg" data-caption="Hospital rotation · UVA School of Medicine · SMLP 2023">
+                <img src="photos/uva-rotation.jpg" alt="Hospital rotation at UVA" loading="lazy" />
+                <span class="photo-thumb-caption">Hospital rotation · UVA</span>
+              </a>
+            </div>
           </div>
         </div>
 
@@ -1569,6 +1764,24 @@
             <li><strong>Max Planck Florida Institute for Neuroscience</strong> · West Palm Beach, FL · March 9, 2026</li>
             <li><strong>Neuro-ID Program — UPR Río Piedras (Oral)</strong> · San Juan, PR · September 17, 2025</li>
           </ul>
+          <div class="pub-photos">
+            <a class="photo-thumb" data-lightbox data-src="photos/conf-phsu-2025.jpg" data-caption="11th Behavioral Health Research Symposium · PHSU Medical School, Ponce, PR · October 2025">
+              <img src="photos/conf-phsu-2025.jpg" alt="At PHSU Symposium 2025" loading="lazy" />
+              <span class="photo-thumb-caption">PHSU · Ponce 2025</span>
+            </a>
+            <a class="photo-thumb" data-lightbox data-src="photos/conf-sfn-2025-wall.jpg" data-caption="2025 Society for Neuroscience Conference · San Diego, CA · November 2025">
+              <img src="photos/conf-sfn-2025-wall.jpg" alt="At SfN 2025 San Diego" loading="lazy" />
+              <span class="photo-thumb-caption">SfN · San Diego 2025</span>
+            </a>
+            <a class="photo-thumb" data-lightbox data-src="photos/conf-prn-2025.jpg" data-caption="33rd Puerto Rico Neuroscience Conference · San Juan, PR · December 2025">
+              <img src="photos/conf-prn-2025.jpg" alt="At 33rd PR Neuroscience Conference" loading="lazy" />
+              <span class="photo-thumb-caption">33rd PR Neuroscience</span>
+            </a>
+            <a class="photo-thumb" data-lightbox data-src="photos/conf-maxplanck-2026.jpg" data-caption="Max Planck Florida Institute · Sunposium 2026 · West Palm Beach, FL · March 2026">
+              <img src="photos/conf-maxplanck-2026.jpg" alt="At Max Planck Florida — Sunposium 2026" loading="lazy" />
+              <span class="photo-thumb-caption">Max Planck · Sunposium 2026</span>
+            </a>
+          </div>
         </div>
 
         <div class="pub-item">
@@ -1577,6 +1790,12 @@
           <ul class="pres-list">
             <li><strong>2025 Society for Neuroscience Conference</strong> · San Diego, CA · November 17, 2025</li>
           </ul>
+          <div class="pub-photos">
+            <a class="photo-thumb" data-lightbox data-src="photos/conf-sfn-2025-colega.jpg" data-caption="2025 Society for Neuroscience Conference · San Diego, CA · with co-author colleague">
+              <img src="photos/conf-sfn-2025-colega.jpg" alt="At SfN 2025 with co-author colleague" loading="lazy" />
+              <span class="photo-thumb-caption">SfN 2025 · with co-author</span>
+            </a>
+          </div>
         </div>
 
         <div class="pub-item">
@@ -1587,6 +1806,12 @@
             <li><strong>USC Sciences Poster Session</strong> · San Juan, PR · October 28, 2024</li>
             <li><strong>Neuro-ID Program — UPR Río Piedras (Oral)</strong> · San Juan, PR · May 23, 2025</li>
           </ul>
+          <div class="pub-photos">
+            <a class="photo-thumb" data-lightbox data-src="photos/conf-sfn-2024.jpg" data-caption="2024 Society for Neuroscience Conference · Chicago, IL · my first SfN">
+              <img src="photos/conf-sfn-2024.jpg" alt="At SfN 2024 Chicago — first SfN" loading="lazy" />
+              <span class="photo-thumb-caption">SfN · Chicago 2024 (first SfN)</span>
+            </a>
+          </div>
         </div>
 
       </div>
@@ -1665,6 +1890,9 @@
         </div>
 
         <div class="lead-card reveal">
+          <a class="lead-photo" data-lightbox data-src="photos/lead-redcross.jpg" data-caption="American Red Cross — Puerto Rico Chapter · Biomedical Services Transport Specialist">
+            <img src="photos/lead-redcross.jpg" alt="Volunteering at the American Red Cross — Puerto Rico Chapter" loading="lazy" />
+          </a>
           <div class="lead-date">Nov 2025 – Present</div>
           <h4>American Red Cross — Puerto Rico Chapter</h4>
           <div class="lead-role">Biomedical Services Transport Specialist</div>
@@ -1672,6 +1900,9 @@
         </div>
 
         <div class="lead-card reveal">
+          <a class="lead-photo" data-lightbox data-src="photos/lead-nsa.jpg" data-caption="Neuroscience Student Association — Universidad del Sagrado Corazón · Welcome Activity">
+            <img src="photos/lead-nsa.jpg" alt="Neuroscience Student Association at Sagrado Corazón Welcome Activity" loading="lazy" />
+          </a>
           <div class="lead-date">Apr 2025 – Present</div>
           <h4>Neuroscience Student Association · USC</h4>
           <div class="lead-role">Founding President</div>
@@ -1855,6 +2086,13 @@
     </div>
   </section>
 
+  <!-- Lightbox modal -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">×</button>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="" />
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
   <footer>
     <div class="container">
       <p>© <span id="year"></span> Héctor Abdiel López Rivera · Crafted with care · <a href="#top">Back to top ↑</a></p>
@@ -1926,6 +2164,45 @@
 
     // Year
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ----- Lightbox -----
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCap = document.getElementById('lightboxCaption');
+    const lightboxClose = document.getElementById('lightboxClose');
+
+    function openLightbox(src, caption) {
+      lightboxImg.src = src;
+      lightboxImg.alt = caption || '';
+      lightboxCap.textContent = caption || '';
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      lightboxImg.src = '';
+    }
+
+    document.addEventListener('click', (e) => {
+      const trigger = e.target.closest('[data-lightbox]');
+      if (trigger) {
+        e.preventDefault();
+        const src = trigger.dataset.src || (trigger.querySelector('img') && trigger.querySelector('img').src);
+        const cap = trigger.dataset.caption || '';
+        if (src) openLightbox(src, cap);
+        return;
+      }
+      if (e.target === lightbox || e.target.closest('#lightboxClose')) {
+        closeLightbox();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+    });
   </script>
 </body>
 </html>
